@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import iesgo from "../../assets/iesgo.png";
 import Drawer from '../Drawer';
-import drawerIcon from '../../assets/drawer.png';
-import arrowDown from '../../assets/arrow.png'; 
+import back from '../../assets/back.png';
 
 const CustomTextInput = React.forwardRef(({ placeholder, keyboardType, value }, ref) => (
   <TextInput
@@ -18,14 +17,10 @@ const CustomTextInput = React.forwardRef(({ placeholder, keyboardType, value }, 
 ));
 
 const inputFields = [
-  { placeholder: "Nome", keyboardType: "default" },
-  { placeholder: "Telefone", keyboardType: "phone-pad" },
-  { placeholder: "Email", keyboardType: "email-address" },
-  { placeholder: "CPF", keyboardType: "numeric" },
-  { placeholder: "Data De Nascimento", keyboardType: "default" },
-  { placeholder: "Profissão", keyboardType: "default" },
-  { placeholder: "Sexo", keyboardType: "default" },
-  { placeholder: "Marcar Agendamento: dd/mm/aa - hh:mm", keyboardType: "default" },
+  { placeholder: "Nome Completo", keyboardType: "default" },
+  { placeholder: "N° Matricula", keyboardType: "phone-pad" },
+  { placeholder: "Semestre", keyboardType: "email-address" },
+  { placeholder: "Email", keyboardType: "numeric" },
 ];
 
 const students = [
@@ -35,23 +30,13 @@ const students = [
   { nome: 'Julia', semestre: '3º', pacientes: 2 },
 ];
 
-export default function PatientDetails() {
+export default function StudentDetails() {
   const inputRefs = useRef(inputFields.map(() => React.createRef()));
-  const [alunosVisible, setAlunosVisible] = useState(false);
-  const [alunoSelecionado, setAlunoSelecionado] = useState(null);
-
-  const toggleAlunos = () => {
-    setAlunosVisible(!alunosVisible);
-  };
-
-  const selectAluno = (index) => {
-    setAlunoSelecionado(index === alunoSelecionado ? null : index);
-  };
 
   return (
     <>
       {/* NavBar fictício */}
-      <Drawer title="Detalhes do paciente" icon={drawerIcon}/>
+      <Drawer title="Detalhes do Aluno" icon={back} />
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={iesgo} style={styles.logo} />
         {inputFields.map((field, index) => (
@@ -63,36 +48,8 @@ export default function PatientDetails() {
           />
         ))}
 
-        {/* Componente Aluno Responsável */}
-        <TouchableOpacity style={styles.alunoResponsavel} onPress={toggleAlunos}>
-          <Text style={styles.alunoResponsavelText}>
-            {alunoSelecionado !== null ? students[alunoSelecionado].nome : 'Aluno Responsável'}
-          </Text>
-          <Image source={arrowDown} style={[styles.arrowIcon, alunosVisible ? styles.arrowIconUp : null]} />
-        </TouchableOpacity>
-        
-        {/* Lista de alunos (expansível) */}
-        {alunosVisible && (
-          <View style={styles.alunosList}>
-            {students.map((aluno, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.alunoItem, alunoSelecionado === index ? styles.alunoSelecionado : null]}
-                onPress={() => selectAluno(index)}
-              >
-                <Text style={styles.alunoName}>{aluno.nome}</Text>
-                <Text>Semestre: {aluno.semestre}</Text>
-                <Text>Pacientes: {aluno.pacientes}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        <TouchableOpacity style={styles.downloadButton}>
-          <Text style={styles.downloadButtonText}>Baixar pedido médico</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.saveButton} activeOpacity={0.7}>
-          <Text style={styles.saveButtonText}>Salvar Informações</Text>
+          <Text style={styles.saveButtonText}>Ver pacientes</Text>
         </TouchableOpacity>
       </ScrollView>
     </>

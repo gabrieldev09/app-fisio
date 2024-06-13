@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import button from '../../assets/button.png';
 import Drawer from '../Drawer';
+import ModalStundets from '../Modal';
+import drawerIcon from '../../assets/drawer.png';
 
 const students = [
   { nome: 'Junio', semestre: '5º', pacientes: 5 },
@@ -15,7 +17,7 @@ const students = [
   { nome: 'Pedro', semestre: '6º', pacientes: 4 },
 ];
 
-const StudentsCard = ({ nome, semestre, pacientes }) => (
+const StudentsCard = ({ nome, semestre, pacientes, onPress }) => (
   <View style={styles.card}>
     <View style={styles.cardContent}>
       <View style={styles.cardText}>
@@ -29,27 +31,43 @@ const StudentsCard = ({ nome, semestre, pacientes }) => (
         <Text style={styles.value}>{semestre}</Text>
       </View>
     </View>
-    <TouchableOpacity activeOpacity={0.5} style={styles.button}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={onPress}>
       <Image source={button} style={styles.icon} />
     </TouchableOpacity>
   </View>
 );
 
 const Students = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleButtonPress = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <>
-      {/* NavBar ficticio */}
-      <Drawer title="Alunos" />
+      <Drawer title="Alunos" icon={drawerIcon}/>
       <View style={styles.container}>
         <FlatList
           data={students}
           renderItem={({ item }) => (
-            <StudentsCard nome={item.nome} semestre={item.semestre} pacientes={item.pacientes} />
+            <StudentsCard
+              nome={item.nome}
+              semestre={item.semestre}
+              pacientes={item.pacientes}
+              onPress={handleButtonPress}
+            />
           )}
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
         />
       </View>
+
+      <ModalStundets modalVisible={modalVisible} closeModal={closeModal} />
     </>
   );
 };
@@ -76,6 +94,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     borderColor: '#000',
     marginBottom: 20,
+    flex: 1
   },
   cardContent: {
     flexDirection: 'row',
@@ -106,8 +125,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 110,
     width: 70,
+    height: '100%',
     borderWidth: 0.2,
     borderColor: '#000'
   },
