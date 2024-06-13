@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import drawer from '../../assets/drawer.png';
 
-export default function Drawer({ title }) {
+export default function Drawer({ title, icon }) {
   return (
     <View>
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.drawerIconContainer}>
-          <Image source={drawer} style={styles.drawerIcon} />
+          <Image source={icon} style={styles.drawerIcon} />
         </TouchableOpacity>
         <Text style={styles.navTitle}>{title}</Text>
       </View>
